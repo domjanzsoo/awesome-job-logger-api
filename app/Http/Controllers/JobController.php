@@ -23,4 +23,22 @@ class JobController extends Controller
     {
       return $this->model->all();
     }
+
+    public function create(Request $request)
+    {
+      try {
+        $data = $request->validate([
+          'summary' => 'string',
+          'description' => 'string | max:500',
+          'status'  => 'string| in:open,in progress,completed,cancelled',
+          'property_id' => 'numeric'
+        ]);
+
+        $this->model->create($data);
+
+        return respone('Job log added successfully', 201); 
+      } catch(\Exeption $e) {
+        error_log('Job logging failed: ' . $e->getMessage());
+      }
+    }
 }

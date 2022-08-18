@@ -21,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('/jobs', [JobController::class, 'getAll']);
+Route::post('/job', [JobController::class, 'create']);
