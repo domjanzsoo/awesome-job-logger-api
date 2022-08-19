@@ -21,7 +21,7 @@ class JobController extends Controller
   //  by the JobController
   public function getAll()
   {
-    return $this->model->all();
+    return $this->model->with('property')->get();
   }
 
   public function create(Request $request)
@@ -31,12 +31,12 @@ class JobController extends Controller
         'summary' => 'string',
         'description' => 'string | max:500',
         'status'  => 'string| in:open,in progress,completed,cancelled',
-        'property_id' => 'numeric'
+        'property_id' => 'numeric',
       ]);
 
       $this->model->create($data);
 
-      return respone('Job log added successfully', 201);
+      return response('Job log added successfully', 201);
     } catch(\Exeption $e) {
       error_log('Job logging failed: ' . $e->getMessage());
     }
