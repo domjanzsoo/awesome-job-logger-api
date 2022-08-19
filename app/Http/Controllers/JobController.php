@@ -27,12 +27,19 @@ class JobController extends Controller
   public function create(Request $request)
   {
     try {
+      // As we don't have a user session for now, we just put a hard coded name
+      $user = session()->get('user.name') ?? 'Peter Griffin';
+
       $data = $request->validate([
         'summary' => 'string',
         'description' => 'string | max:500',
-        'status'  => 'string| in:open,in progress,completed,cancelled',
         'property_id' => 'numeric',
       ]);
+
+      $data['status'] = 'open';
+      // In a real life applicatin this should be a one-to-many relation between the user and the jobs
+      //  but for now I just add the name of the user
+      $data['raised_by'] = $user;
 
       $this->model->create($data);
 
